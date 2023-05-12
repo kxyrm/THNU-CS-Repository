@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ea4b735c-54d3-46d1-bbd9-9990bb978d45" name="变更" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP_54" />
+  <component name="ProjectId" id="29YLcKrezlQd94UyR6orZaUbAD1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;credentialsType com.jetbrains.php.remote.interpreter.ui.PhpCreateRemoteSdkForm&quot;: &quot;SSH 配置&quot;,
+    &quot;credentialsType com.jetbrains.php.remote.interpreter.ui.PhpInplaceEditRemoteSdkForm&quot;: &quot;SSH 配置&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;SQL 更新&quot;,
+    &quot;database.data.extractors.current.id&quot;: &quot;SQL 更新&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/k/PhpstormProjects/test_one/toReg.php&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\k\PhpstormProjects\test_one" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="ea4b735c-54d3-46d1-bbd9-9990bb978d45" name="变更" comment="" />
+      <created>1653285150308</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1653285150308</updated>
+      <workItem from="1653285151525" duration="1695000" />
+      <workItem from="1653286875715" duration="261000" />
+      <workItem from="1653373769749" duration="11657000" />
+      <workItem from="1653392756362" duration="5199000" />
+      <workItem from="1653629672650" duration="10607000" />
+      <workItem from="1653648106431" duration="1753000" />
+      <workItem from="1653649893234" duration="8449000" />
+      <workItem from="1653666354487" duration="1987000" />
+      <workItem from="1653718849976" duration="10078000" />
+      <workItem from="1653730343477" duration="2230000" />
+      <workItem from="1653738982996" duration="4105000" />
+      <workItem from="1653794861478" duration="11952000" />
+      <workItem from="1653822004563" duration="575000" />
+      <workItem from="1654258288542" duration="764000" />
+      <workItem from="1654323337091" duration="174000" />
+      <workItem from="1654323521470" duration="15298000" />
+      <workItem from="1654339128716" duration="1503000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
