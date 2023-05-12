@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!--    <meta charset="UTF-8">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件上传</title>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+        }
+
+        .container {
+            height: 100%;
+            background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
+        }
+
+        .login-wrapper {
+            background-color: #fff;
+            width: 500px;
+            height: 588px;
+            border-radius: 100px;
+            padding: 0 50px;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .header {
+            font-size: 38px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 150px;
+        }
+
+
+        .btn {
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            margin-top: 40px;
+            background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
+            color: #fff;
+        }
+
+        a {
+            text-decoration-line: none;
+            color: #abc1ee;
+        }
+    </style>
+
+    <script>
+        function getFilename() {
+            const len = document.getElementById("file").files.length;
+            for (let i = 0; i < len; i++) {
+                const filename = document.getElementById("file").files[i].name;
+                if (filename == undefined || filename == "") {
+                    document.getElementById("filename").innerHTML = "";
+                } else {
+                    const fn = filename.substring(filename.lastIndexOf("\\") + 1);
+                    document.getElementById("filename").innerHTML += fn + " "; //将截取后的文件名填充到span中
+                }
+            }
+        }
+    </script>
+
+
+</head>
+
+
+<body>
+<div class="container">
+    <div class="login-wrapper">
+        <div class="header">文件上传</div>
+        <div class="form-wrapper">
+
+
+            <form action="upload_file.php" method="post" enctype="multipart/form-data">
+                <input type="file" style="display:none;" onchange="getFilename()" id="file" name="file[]" multiple=""/>
+                <label for="file">
+                    <div class="btn" id="img" style="cursor: pointer; margin-top: 10px;" >选择文件</div>
+                </label>
+                <span><div class="btn" style="cursor: pointer" id="filename"></div></span>
+
+
+                <!--提交按钮-->
+                <input type="submit" name="submit" value="提交" style="display: none;" id="sub"/>
+                <label for="sub">
+                    <div class="btn" style="cursor: pointer">提交</div>
+                </label>
+                <a href="new_password.html"><div class="btn">修改密码</div></a>
+                <a href="logout.php"><div class="btn">退出登录</div></a>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
