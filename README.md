@@ -1,4 +1,4 @@
-# AHU-CS-Package
+# THNU-CS-Package
 这个仓库主要汇总THNU计科院相关资料，包括专业课相关资料、考试试卷等。
 
 
