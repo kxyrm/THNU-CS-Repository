@@ -1,10 +1,33 @@
-- 👋 Hi, I’m @kxyrm OK
-- 👀 I’m interested in code
-- 🌱 I’m currently learning code
-- 💞️ I’m looking to collaborate on work
-- 📫 How to reach me 2270429389@qq.com
+# AHU-CS-Package
+这个仓库主要汇总THNU计科院相关资料，包括专业课相关资料、考试试卷等。
 
-<!---
-kxyrm/kxyrm is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+
+**希望通化师范学院计算机学院的各位同学共同来维护这个资料库**，救学弟学妹一命，胜造七级浮屠。
+
+### PR格式
+- D: 表示进行了文件删除操作
+- A: 表示添加了文件
+- U: 表示对文件作出了更新操作
+
+请大家注意PR格式！
+
+
+### 更新说明
+
+2021/09/15 
+
+- `D`：院系老师
+- `A`：操作系统
+
+2021/12/15
+
+- `A`: 软件需求分析、大数据技术实践 ((https://github.com/kxyrm))
+
+
+
+### 其他
+
+欢迎提issue，或者直接联系我
+
+E-mail: 2270429389@qq.com
+
