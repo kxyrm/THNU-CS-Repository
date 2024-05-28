@@ -1,0 +1,78 @@
+.dad{
+	height: 1000px;
+	width: 70%;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	background: #FFE7BA;
+}
+.topimg{
+	height: 12%;
+	width: 25%;
+	float: left;
+
+	/*background-color: red;*/
+}
+.daohang{
+	height: 12%;
+	width: 70%;
+	float: left;
+	margin-left: 50px;
+}
+.one{
+	list-style-type: none;
+	height: 50px;
+	line-height: 50px;
+	width: 15%;
+	margin-right: 10px;
+	background-color: #00cccc;
+	text-align: center;
+	float: left;
+}
+.img_one{
+	height: 50%;
+	width: 98%;
+	background-color: green;
+	background-size: contain;
+	border: 2px solid black;
+	margin-bottom: 5px;
+	margin-left: 1%;
+}
+
+.tu{
+	height: 100%;
+	width: 100%;
+	vertical-align: middle;
+}
+.wenzi{
+	height: 34%;
+	width: 30%;
+	background-color: white;
+	float: left;
+	border: 2px solid black;
+	margin-left:2%;
+}
+.two_two{
+	height: 20%;
+	width: 100%;
+	/*float: left;*/
+	/*background-color: red;*/
+	margin-left: 15px;
+}
+a:link{
+	color: #80ff00;
+}
+a:visited{
+	color: #FF8000;
+}
+a:hover{
+	color: #1a0000;
+	background-color: #ffbf00;
+}
+a:active{
+	color: red;
+}

@@ -1,0 +1,105 @@
+body{
+	background-image: url(images/bj.gif);
+	background-repeat: repeat-x;
+}
+.dad{
+	height: 950px;
+	width: 1000px;
+	position: absolute;
+	left: 0px; right: 0px; top: 50px; bottom: 0px;
+	margin-left: auto; 
+	margin-right: auto;
+	background-color: #856647;
+	border: 2px solid black;
+}
+.topimg{
+	height: 54px;
+	/*width: 200px;*/
+	float: left;
+	/*background-color: red;*/
+}
+.topimg img {
+	height: 100%;
+	zwidth: 100%;
+
+}
+.daohang ul {
+	height: 60px;
+	width: 500px;
+	padding: 0px;
+	float: left;
+	margin: 0px;
+	margin-left: 20px;
+}
+
+.daohang ul li {
+	
+	list-style-type: none;
+	float: left;
+	background-color: #008fb3;
+	background-image: url(images/navHoverBg.png);
+}
+.daohang ul li a {
+	line-height: 60px;
+	width: 100px;
+	display: block;
+	text-decoration: none;
+	font-size: 15px;
+	text-align: center;
+}
+
+.img_one{
+	/*height: 30%;*/
+	/*width: 100%;*/
+	background-color: green;
+	background-size: contain;
+	margin-bottom: 5px;
+}
+.img_one img {
+	height: 100%;
+	width: 100%;
+	vertical-align: middle;
+}
+h3 {
+	background-image: url(images/title.jpg);
+	color: white;
+	margin-top: 0px;
+}
+.wenzi{
+	height: 200px;
+	width: 30%;
+	background-color: #e0ebeb;
+	float: left;
+	border: 2px solid black;
+	margin-left:2%;
+}
+/*ul li :: marker{
+	color: red;
+
+}*/
+/*.wenzi ul{
+	padding-left: 2rem;
+}*/
+.wenzi ul li{
+	padding-left: 15px;
+	list-style-type: none;
+	background-image: url(images/dot.gif);
+	background-position: 0 8px;
+	background-repeat: no-repeat;
+	background-size: 5px;
+	margin-bottom: 5px;
+}
+
+a:link{
+	color: #80ff00;
+}
+a:visited{
+	color: #FF8000;
+}
+a:hover{
+	color: #1a0000;
+	background-color: #ffbf00;
+}
+a:active{
+	color: red;
+}
