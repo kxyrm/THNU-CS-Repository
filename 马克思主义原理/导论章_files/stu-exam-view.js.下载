@@ -1,0 +1,50 @@
+// 右侧高度
+function markingHeight() {
+	var windHeight = $(window).height() - 20;
+	var markingH = $("#fanyaMarking").offset().top;
+	var personalInfor = $("#personalInfor").innerHeight();
+	$('#rightHeight').css({
+		'max-height' : windHeight - markingH,
+		'top' : markingH
+	});// 左侧top
+	var ht = windHeight - markingH - personalInfor - 10;
+	$('#topicNumberScroll').css('max-height', ht + 'px') // 滚动条高
+}
+
+// 右侧滚动条
+function topicNumberScroll() {
+	$("#topicNumberScroll").niceScroll({
+		cursorborder : "",
+		cursorwidth : 8,
+		cursorcolor : "#e6ecf5",
+		boxzoom : false,
+		autohidemode : true
+	});
+	setInterval(function() {
+		$("#topicNumberScroll").getNiceScroll().resize(); // 检测滚动条是否重置大小（当窗口改变大小时）
+	}, 300)
+}
+
+$(function(){
+	markingHeight();
+	
+	topicNumberScroll();
+	
+	window.onresize = function() {
+		markingHeight();
+	};
+	
+	$(".topicNumber_list li").click(function(event) {
+		var questionId = $(this).attr("data");
+		var markingH = $("#fanyaMarking").offset().top + 10;
+		var id = ".scroll_" + questionId;
+		var ele = $(id);
+		if(ele.length == 0){
+			return;
+		}
+		$("html,body").animate({
+			scrollTop : ele.offset().top - markingH
+		}, 500);
+	});
+});
+

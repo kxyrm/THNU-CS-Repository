@@ -1,0 +1,107 @@
+function viewMark(obj) {
+	var courseId = $("#courseId").val();
+	var classId = $("#classId").val();
+	var teacherPersonId = $("#cpi").val();
+	
+	var questionId = $(obj).attr("data1");
+	var recordId = $(obj).attr("data2") || 0;
+	
+	var isStudent = $("#isStudent").val();
+	var obj = $("#qbstuAnswer" + questionId);
+    var stuPersonId = $("#stuCpi").val();
+    if (typeof isStudent != "undefined" && isStudent == "true") {
+        teacherPersonId = stuPersonId;
+    }
+
+	var fullScore = $(obj).attr("data1");
+    var scoreEle = $("input[name=score" + questionId + "]");
+    if (scoreEle.length == 0) {
+        scoreEle = $("#compoundSubQuesMark_" + questionId);
+    }
+    var score = $(scoreEle).val();
+    if (score == "") {
+        score = 0;
+    }
+    if (typeof isStudent != "undefined" && isStudent == "true") {
+        fullScore = 0;
+        score = 0;
+    }
+
+	// 拿到所有附件
+	var objectId = "";
+    $(obj).find(".attach a").each(function(index, element) {
+        var url = $(this).attr("href");
+        if (url == undefined || url == null) {} else {
+            if (url.search("objectId") > -1) {
+                var typeArr = url.split(".");
+                var type = "";
+                if (typeArr.length > 0) {
+                    type = typeArr[typeArr.length - 1];
+                }
+                var objStr = url.split("&")[0];
+                var objId = objStr.substr(objStr.search("objectId") + 9);
+                if (type.toLocaleLowerCase() == "pdf" || type.toLocaleLowerCase() == "epub" || type.toLocaleLowerCase() == "doc"
+                    || type.toLocaleLowerCase() == "docx") {
+                    objectId += (objId + ",");
+                }
+            }
+        }
+    });
+
+	$(obj).find(".attachNew").each(function(index, element) {
+		var element = $(this).children("span:first");
+		var oid = $(element).attr("data");
+		var type = $(element).attr("type");
+		if (type.toLocaleLowerCase() == "pdf" || type.toLocaleLowerCase() == "epub" || type.toLocaleLowerCase() == "doc"
+			|| type.toLocaleLowerCase() == "docx") {
+			objectId += (oid + ",");
+		}
+	});
+
+	$(obj).find("img.ans-ued-img").each(function() {
+		var url = $(this).attr("src");
+		var oid = "";
+		if ( typeof url != "undefined" && url.length > 0) {
+			var spt = url.split("/");
+			var str = spt[spt.length - 1];
+			if (str.indexOf(".") == -1) {
+				oid = str;
+			} else {
+				var s = str.split(".");
+				oid = s[0];
+			}
+		}
+		objectId += (oid + ",");
+	});
+
+	if (objectId.length == 0) {
+		alert("请稍后重试");
+		return;
+	}
+
+	$.ajax({
+		url : "/work/check-attach",
+		type : "get",
+		data : {
+			"courseId" : courseId,
+			"classId" : classId,
+			"objectId" : objectId,
+			"questionId" : questionId,
+			"recordId" : recordId,
+			"fullScore" : fullScore,
+			"score" : score,
+			"stuPersonId" : stuPersonId,
+			"teacherPersonId" : teacherPersonId
+		},
+		async : false,
+		dataType : "json",
+		success : function(data) {
+			if (data.status) {
+				var url = data.url;
+				window.open(url, "newwindow", "height=" + screen.availHeight - 100 + ",width=" + screen.availWidth + ",top=0,left=0,toolbar=no,menubar=no,scrollbars=yes,resizable=no,location=no,status=no");
+			} else {
+				alert("请稍后重试");
+			}
+		}
+	});
+}
