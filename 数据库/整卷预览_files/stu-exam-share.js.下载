@@ -1,0 +1,570 @@
+//首次进入考试日志
+function entryExamLog(data){
+    var snapshotMonitor = $('#snapshotMonitor').val();
+    if(snapshotMonitor != 1){
+        return;
+    }
+    var eventType = 0;
+    pushExamMonitorLog(eventType,data);
+}
+
+//重新进入考试日志
+function rentryExamLog(data){
+    var snapshotMonitor = $('#snapshotMonitor').val();
+    if(snapshotMonitor != 1){
+        return;
+    }
+    var eventType = 1;
+    pushExamMonitorLog(eventType,data);
+}
+
+//提交答案日志
+function answerRecordLog(answerData){
+    var snapshotMonitor = $('#snapshotMonitor').val();
+    if(snapshotMonitor != 1){
+        return;
+    }
+    if(!answerData){
+        return;
+    }
+    
+    var answerMode = $('#answerMode').val() || 0;
+	if(answerMode == 1){
+		var submitTime = answerData.submitTime || -1;
+		if(submitTime > 0){
+			$('#enterPageTime').val(submitTime);
+		}
+	}
+    
+    var eventType = 3;
+    pushExamMonitorLog(eventType,answerData);
+}
+
+//最终提交考试日志
+function finalSubmitExamLog(data){
+    var snapshotMonitor = $('#snapshotMonitor').val();
+    if(snapshotMonitor != 1){
+        return;
+    }
+    var eventType = 2;
+    pushExamMonitorLog(eventType,data);
+}
+
+//切屏日志
+function switchScreenLog(data){
+	var switchScreenControl = $('#switchScreenControl').val();
+	if(switchScreenControl != 1){
+		return;
+	}
+	if(!data){
+		return;
+	}
+	var status = data.status;
+	var eventType = 9;
+    if(status == 1){
+    	eventType = 10;
+    }
+	pushExamMonitorLog(eventType,data);
+}
+
+//监控抓拍日志
+function snapshotMonitorLog(data){
+	var snapshotMonitor = $('#snapshotMonitor').val();
+	if(snapshotMonitor != 1){
+		return;
+	}
+	  if(!data){
+			return;
+	  }
+	 // alert(data.funconfig);
+	  var funconfig = JSON.parse(data.funconfig || data.funConfig);
+	  var answerId = $('#testUserRelationId').val();
+	  var classId = $('#classId').val();
+	  if(funconfig.answerId != answerId || funconfig.classId != classId){
+		  return;
+	  }
+	  var similarity = data.similarity;
+	  var status = true;
+	  if(similarity < 50){
+		  status = false;
+	  }
+	  data.status = status;
+	  var eventType = 5;
+	  pushExamMonitorLog(eventType,data);
+}
+
+//监控截屏日志
+function clientSnapShotLog(data) {
+	var snapshotMonitor = $('#snapshotMonitor').val();
+	if (snapshotMonitor != 1) {
+		return;
+	}
+	if (!data) {
+		return;
+	}
+	var funconfig = JSON.parse(data.funconfig || data.funConfig);
+	var answerId = $('#testUserRelationId').val();
+	var classId = $('#classId').val();
+	if (funconfig.answerId != answerId || funconfig.classId != classId) {
+		return;
+	}
+	var eventType = 8;
+	pushExamMonitorLog(eventType, data);
+}
+
+
+function pushExamMonitorLog(eventType,data,callBack) {
+	try{
+		if (typeof (data) != 'object') {
+			data = {};
+		}
+		var url = '/keeper/api/receiveExamLogs?eventType=' + eventType;
+		var currentFaceId = data.currentFaceId;
+
+        if (eventType == 0 && ( typeof (currentFaceId) == "undefined" || currentFaceId == "")) {
+            var _version=data.version;
+            if (typeof (_version) != "undefined" && _version != -1) {
+               // url = '/keeper/api/receiveExamLogs?currentFaceId=false&eventType=' + eventType;
+                url = url + '&currentFaceId=false';
+            }
+        }
+		
+		var eventTime = new Date().getTime();
+		var ip = "";
+		if (eventType == 1) {
+			eventTime = data.rentryExamTime;
+		} else if (eventType == 2) {
+			eventTime = data.finalSubmitTime;
+		} else if (eventType == 3) {
+			eventTime = data.submitTime;
+		}
+		//data.device = 0;
+	
+		var courseId = $('#courseId').val();
+		var examRelationId = $('#testPaperId').val();
+		var answerId = $('#testUserRelationId').val();
+		var clazzId = $('#classId').val();
+		var personId = $('#cpi').val();
+		var log = {
+				"courseId":courseId,
+				"clazzId": clazzId,
+				"personId":personId,
+				"examRelationId":examRelationId,
+				"answerId":answerId,
+				"eventType":eventType,
+				"ip":ip,
+				"data":data
+		};
+	    var monitorEnc = $('#monitorEnc').val();
+		$.ajax({
+			type : 'post',
+			dataType : 'json',
+			url : url,
+			data : {"log":JSON.stringify(log), "enc":monitorEnc},
+			success : function(data) {
+				callBack && callBack(data);
+			}
+		});
+	}catch(err){}
+}
+
+
+function removeTimeOverSubmitTimers(){
+    var overTimeSubmitTimers = window.OverTimeSubmitTimers;
+    if(!overTimeSubmitTimers || overTimeSubmitTimers.length == 0){
+        return ;
+    }
+    for(var i = 0 ; i < overTimeSubmitTimers.length; i++){
+        var overTimeSubmitTimer = overTimeSubmitTimers[i];
+        if(overTimeSubmitTimer){
+            clearTimeout(overTimeSubmitTimer);
+        }
+    }
+}
+
+function timeOverSubmitTest() {
+	submitForm(false, false);
+	//时间用完提交后，默认重试两次
+	if (!window.OverTimeSubmitTimers) {
+		window.OverTimeSubmitTimers = [];
+	}
+	var overTimeSubmitTimers = window.OverTimeSubmitTimers;
+	for (var i = 0; i < 2; i++) {
+		var overTimer = setTimeout(function() {
+			submitForm(false, false);
+		}, (i + 1) * 5000);
+		overTimeSubmitTimers.push(overTimer);
+	}
+}
+
+function goExamList() {
+    var qbanksystem =  $('#qbanksystem').val();
+    var qbankbackurl =  $('#qbankbackurl').val();
+    if(qbanksystem == 1 && qbankbackurl !== ''){
+        qbankbackurl = decodeURIComponent(qbankbackurl);
+        location.href = qbankbackurl;
+        return;
+    }
+
+    var courseId = $("#courseId").val();
+    var classId = $("#classId").val();
+    var cpi = $("#cpi").val();
+    var openc = $("#openc").val() || '';
+    if(typeof(cpi)=="undefined"){
+        cpi = 0;
+    }
+    var examsystem=$("#examsystem").val();
+    location.href = "/mooc2/exam/exam-list?clazzid="+classId+"&courseid=" + courseId +"&cpi=" +cpi+ "&ut=s"  +
+        "&examsystem=" + examsystem + "&openc=" + openc;
+}
+
+
+function sortMultiAnswer(answer) {
+    if ( !answer || answer.trim().length == 0) {
+        return "";
+    }
+    var answerArray = answer.trim().split('');
+    var sortedAnswerArray = answerArray.sort();
+    return sortedAnswerArray.join('');
+}
+
+function addEvaluationChoice(obj,selectNum) {
+    var subObj = $(obj).find(".num_option_dx");
+    var qid = $(subObj).attr("qid");
+    
+    if(!subObj.hasClass('check_answer_dx')){
+    	var checkedNum = $('.choice' + qid + '.check_answer_dx').length;
+    	selectNum = selectNum || 0;
+    	if(selectNum > 0 && parseInt(checkedNum) >= parseInt(selectNum)){
+    		  $.toast({type: 'notice', content: '最多选' + selectNum + '项'});
+    		return false;
+    	}
+    }
+    
+    if($(subObj).hasClass("check_answer_dx")) {
+        $(subObj).removeClass("check_answer_dx");
+    } else {
+        $(subObj).addClass("check_answer_dx");
+    }
+
+    var choiceContent = "";
+    $(".choice" + qid).each(function(){
+        if($(this).hasClass("check_answer_dx")){
+            choiceContent = choiceContent + $(this).attr("data");
+        }
+    });
+    $("#answer" + qid).val(choiceContent);
+    return true;
+}
+
+function unhtml(input) {
+    if(!input || input.length == 0) {
+        return input;
+    }
+    var newInput=input.replace(/[&<">']/g, function (a, b) {
+        return {
+            '<':'&lt;',
+            '&':'&amp;',
+            '"':'&quot;',
+            '>':'&gt;',
+            "'":'&#39;'
+        }[a];
+    }) ;
+    return newInput;
+}
+
+function timOverconfirmCloseCallBack(){
+  	 goExamList();
+  	 $("#timeOverSubmitConfirmPop").fullFadeOut();
+  }
+
+
+function checkRemainTime(status){
+	if(status == 'hidden'){
+		 window.Leave_Exam_Page = new Date().getTime();
+		 window.Leave_SingleQuesLimitTime = window.SingleQuesLimitTime || -1;
+	}else if(status == 'visible'){
+		window.Back_Exam_Page = new Date().getTime();
+	}
+	var leaveTime = window.Leave_Exam_Page || 0;
+	var backTime = window.Back_Exam_Page || 0;
+	var threshold = 1 * 60 * 1000;
+	if(leaveTime > 0 && backTime > 0 && (backTime - leaveTime) >=  threshold){
+		window.checkSingleQuesLimitTimeRemainTime && checkSingleQuesLimitTimeRemainTime();
+		fireCheckRemainTime();
+	}
+}
+
+function fireCheckRemainTime() {
+	var formParams = $("#submitTest").serialize();
+	$.ajax({
+		type : 'post',
+		url : '/mooc2/exam/check-remaintime',
+		data : formParams,
+		dataType : 'json',
+		success : function(result) {
+			delete window.Leave_Exam_Page;
+			delete window.Back_Exam_Page;
+			delete window.Leave_SingleQuesLimitTime;
+			var status = result.status;
+			var seconds = result.data;
+			if (!status || !seconds || seconds < 1) {
+				return;
+			}
+		    clearInterval(timers);
+			maxtime = seconds;
+			timers = setInterval("CountDown()",1000);
+		}
+	});
+}
+
+function validateAudioPlayTimes(frameElement) {
+	var frameElementObj = $(frameElement);
+	var mid = frameElementObj.attr('mid') || '';
+	var objectid = frameElementObj.attr('data') || '';
+	var playtimeslimit = frameElementObj.attr('playtimeslimit') || 0;
+	if(mid == '' || objectid == '' || playtimeslimit  <= 0){
+		return;
+	}
+	var quesId = $(frameElement).parents('.singleQuesId').attr('data') || '';
+	var ajax_url = '/exam/test/audio-playtimes?qid=' + quesId  + '&mid=' + mid + '&objectid=' + objectid + '&times=' + playtimeslimit ; 
+	var ajax_type = "post"; 
+	var ajax_data = $("#submitTest").serialize(); 
+    submitAjaxHandle = $.ajax({
+		type : ajax_type,
+		url : ajax_url,
+		data :ajax_data,
+		dataType: "json",
+		success : function(result){
+			var status = result.status;
+			if(status == 0){
+				frameElement.contentWindow.stopAudioPlay();
+				$('.audioLimitTimesTip span').text(playtimeslimit);
+				$("#audioLimitTimesWin").fullFadeIn();
+				return ;
+			}
+		}
+	});
+}
+
+
+//关闭考试监控项
+function closeMonitor(){
+	closeExamClientFaceMonitor();
+	closeExamClientScreenCutting();
+	closeExamClientScreenAndCapture();
+	closeAttatchPreviewWinTab();
+}
+
+//关闭考试附件预览标签页
+function closeAttatchPreviewWinTab(){
+	if(window.cef && typeof (window.cef.ExamEnd) == 'function') {
+		window.cef.ExamEnd();
+	}
+}
+
+//调起客户端切屏协议
+function openExamClientScreenCutting() {
+	var pcclientSwitchout = $('#pcclientSwitchout').val();
+	if (pcclientSwitchout == 1 && window.cef && typeof (window.cef.OpenScreenCutting) == 'function') {
+		var switchScreenControl = $('#switchScreenControl').val();
+		if (switchScreenControl == 1) {
+			window.CLIENT_WEB_LIFECYCLE = function(data) {
+				switchScreenLog(data);
+			};
+		}else{
+			window.CLIENT_WEB_LIFECYCLE = function(data) {	};
+		}
+		var paramObj = {"is_open" : 1};
+		window.cef.OpenScreenCutting(JSON.stringify(paramObj));
+	}
+}
+//关闭客户端切屏协议
+function closeExamClientScreenCutting() {
+	var pcclientSwitchout = $('#pcclientSwitchout').val();
+	if (pcclientSwitchout == 1 && window.cef && typeof (window.cef.OpenScreenCutting) == 'function') {
+		var paramObj = {"is_open":0};
+		window.cef.OpenScreenCutting(JSON.stringify(paramObj));
+	}
+}
+
+//调起人脸抓拍协议
+function openExamClientFaceMonitor(monitorOp, monitorStatus, funconfig) {
+	var snapshotMonitor = $('#snapshotMonitor').val();
+	if (snapshotMonitor == 1 && window.cef && typeof (window.cef.OpenFaceMonitor) == 'function') {
+		window.CLIENT_FACE_COLLECTION = function(data){
+			snapshotMonitorLog(data);
+		};
+		if (monitorOp > 0) {
+			var paramObj = {"enable" : "1","internalTime" : monitorStatus,"funconfig" : funconfig};
+			window.cef.OpenFaceMonitor && window.cef.OpenFaceMonitor(JSON.stringify(paramObj));
+		} else if (monitorOp == 0) {
+			closeExamClientFaceMonitor();
+		}
+	}
+}
+//关闭人脸监控
+function closeExamClientFaceMonitor(){
+	var snapshotMonitor = $('#snapshotMonitor').val();
+	if(snapshotMonitor == 1 && window.cef && typeof (window.cef.OpenFaceMonitor) == 'function') {
+		var paramObj = {"enable" : "0","internalTime" : "-1","funconfig" : ""};
+		window.cef.OpenFaceMonitor && window.cef.OpenFaceMonitor(JSON.stringify(paramObj));
+	}
+}
+
+//调起屏幕抓拍协议
+function openExamClientScreenAndCapture(monitorOp, monitorStatus, funconfig) {
+	//var screenshotTime = screenshotTime || 0;
+	if (window.cef && typeof (window.cef.ScreenAndCapture) == 'function') {
+		window.CLIENT_SNAP_SHOT = function(data){
+			clientSnapShotLog(data);
+		};
+		if (monitorOp > 0) {
+			var paramObj = {"enable" : 1,"internal" : monitorStatus,"funconfig" : funconfig};
+			window.cef.ScreenAndCapture && window.cef.ScreenAndCapture(JSON.stringify(paramObj));
+		} else if (monitorOp == 0) {
+			closeExamClientScreenAndCapture();
+		}
+	}
+}
+
+//关闭屏幕抓拍
+function closeExamClientScreenAndCapture(){
+	if(window.cef && typeof (window.cef.ScreenAndCapture) == 'function') {
+		var paramObj = {"enable" : 0,"internal" : 0,"funconfig" : ""};
+		window.cef.ScreenAndCapture && window.cef.ScreenAndCapture(JSON.stringify(paramObj));
+	}
+}
+
+//客户端退出考试答题页面
+function examClientExitTest(qbankbackurl){
+	closeMonitor();
+	location.href = decodeURIComponent(qbankbackurl);
+}
+
+
+
+function editorPaste(o, html) {
+	html.html = "";
+	$.toast({type: 'failure', content: '只能录入不能粘贴!'});
+	return false;
+}
+
+//function initEditor(width, height, editorId) {
+//	var option = {
+//		'initialFrameWidth' : 800,
+//		'initialFrameHeight' : 150,
+//		'pasteplain' : true
+//	};
+//	if (width && width > 0) {
+//		option.initialFrameWidth = width;
+//	}
+//	if (height && height > 0) {
+//		option.initialFrameHeight = height;
+//	}
+//	var editor = UE.getEditor(editorId, option);
+//	var allowPaste = $('#allowPaste').val();
+//	if (allowPaste == 0) {
+//		editor.addListener('beforepaste', editorPaste);
+//	}
+//}
+
+function replaceAttachPreviewPath() {
+	$('a[href^="/ueditorupload/read"]').each(function() {
+		var href = $(this).attr('href') || '';
+		href = href.replace('/ueditorupload/read', '/examattach/read');
+		$(this).attr('href', href);
+	});
+	window.ATTACH__NO_DOWNLOAD_PATH = '/examattach/read';
+}
+
+$(document).ready(function() {
+	var allowDownloadAttachment  =	$("#allowDownloadAttachment").val();
+	if (!(typeof allowDownloadAttachment != "undefined" && allowDownloadAttachment == "1")) {
+		replaceAttachPreviewPath();
+	}
+	removeImageTitle();
+});
+
+
+function callback_exam(obj) {
+	var winId = "multiTerminalWin";
+	if ($('#' + winId).is(':visible')) {
+		return;
+	}
+	var secondParam = false;
+	var firstVisibleSaveBtn = $('.saveButtonClass:visible').first();
+	if (firstVisibleSaveBtn.length == 1) {
+		var dataId =firstVisibleSaveBtn.attr("dataid");
+		secondParam = $("#sigleQuestionDiv_" + dataId);
+	}
+	
+	var refreshPage = function(){
+		var url = window.location.href;
+		if (url && url.indexOf('tag=1') != -1) {
+			url = url.replace('tag=1', 'tag=0');
+			window.location.href = url;
+		}else{
+			window.location.reload(true);
+		}
+	};
+
+	var confirmFunction = function() {
+		submitForm(true, secondParam, function() {
+			refreshPage();
+		});
+	};
+	var cancelFunction = function() {
+		submitForm(true, secondParam, function() {
+			window.close();
+			closeMonitor();
+			refreshPage();
+		});
+	};
+		
+	var confirmBtn = $('#' + winId).find('.confirmClose');
+	var cancelBtn = $('#' + winId).find('.cancel')
+	confirmBtn.off('click');
+	cancelBtn.off('click');
+	confirmBtn.on('click', confirmFunction);
+	cancelBtn.on('click', cancelFunction);
+	var message = obj.mes;
+	$('#' + winId).find('.popWord').html(message);
+	$("#" + winId).fullFadeIn();
+}
+
+
+function jumpExamLook(){
+
+    var qbanksystem =  $('#qbanksystem').val();
+    var qbankbackurl =  $('#qbankbackurl').val();
+    if(qbanksystem == 1 && qbankbackurl != ''){
+        qbankbackurl = decodeURIComponent(qbankbackurl);
+        location.href = qbankbackurl;
+        return;
+    }
+
+    window.close();
+}
+
+
+//网页考试客户端监听网络变化
+$(window).load(function() {
+	var userAgent = navigator.userAgent || '';
+	var webExamClientKey = 'chaoxingExamPc';
+	if(userAgent && userAgent.indexOf(webExamClientKey) != -1){
+		$(window).on('online', function() {
+			$.toast({type : 'success',content : '网络状态已连接'});
+		});
+		$(window).on('offline', function() {
+			$.toast({type : '', content : '网络异常，请检查网络连接'});
+		});
+	}
+});
+
+
+function removeImageTitle(){
+	$('.TiMu img').each(function(){
+		$(this).removeAttr('title');
+	});
+}

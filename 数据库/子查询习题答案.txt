@@ -1,0 +1,10 @@
+--统计计算机系每名学生的总分和平均分，以学号、总分和平均分为结果列名
+select sno 学号,sum(grade) 总分,avg(grade) 平均分
+from sc
+where sno in(select sno from student where sdept='CS')
+group by sno
+
+--统计被选的每门课程的选课人数和平均分，以课号、人数和平均分为结果列名
+select cno 课号,count(*)人数,avg(grade)平均分
+from sc
+group by cno

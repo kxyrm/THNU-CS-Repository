@@ -1,0 +1,33 @@
+create view bt_s(sno,sname,sbirth)
+as
+select sno,sname,sage
+from student
+select * from student;
+
+
+create view s_g(sno,gavg)
+as
+select sno,avg(grade)
+from sc
+group by sno;
+select * from sc;
+
+create view v1
+as
+select student.sno,sname,cname,grade
+from student,sc,course
+where student.sno = sc.sno and sc.cno = course.cno;
+
+
+select * from v1;
+
+
+
+
+create view v2
+as
+select cno,count(sno) 选课人数,AVG(grade) 平均成绩
+from sc
+group by cno;
+
+select * from v2;

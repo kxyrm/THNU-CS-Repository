@@ -1,0 +1,26 @@
+--查询课程号，课程名，先修课程程号，先修课程名
+select a.cno,a.cname,b.cno,b.cname
+from course a,course b
+where a.cpno=b.cno
+
+select a.cno,a.cname,b.cno,b.cname
+from course a inner join course b on a.cpno=b.cno
+
+--查询学生201215121选修课程的总学分
+select sum(ccredit)
+from sc,course
+where sno='201215121' and sc.cno=course.cno
+
+select sum(ccredit)
+from sc inner join course on sc.cno=course.cno
+where sno='201215121'
+
+--统计每个学生的选修课程门数和总学分，以学号、门数和总学分作为结果列
+select sno 学号,count(*) 门数,sum(ccredit) 总学分
+from sc,course
+where sc.cno=course.cno
+group by sno
+
+select sno 学号,count(*) 门数,sum(ccredit) 总学分
+from sc inner join course on sc.cno=course.cno
+group by sno

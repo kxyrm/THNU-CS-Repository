@@ -1,0 +1,4 @@
+.timeDiv{height:80px;border-bottom:1px solid #F2F2F2;padding:0 24px;line-height:80px;font-size:24px;color:#646873}
+.timeDiv i{display:inline-block;width:20px;height:20px;vertical-align:middle;margin-right:10px;margin-top:-6px;}
+.btn_92_disable{width:92px;height:36px;background:url(/mooc2/images/btn_disable.png)no-repeat;box-shadow:0 4px 11px 0 rgba(86,82,255,0.17);border-radius:20px;}
+body{background: #f2f4f7 !important;}

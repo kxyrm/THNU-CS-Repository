@@ -1,0 +1,28 @@
+create table dept
+(
+	专业号 char(4),
+	专业名 char(20),
+	开设时间 date,
+	constraint pk primary key(专业号)
+)
+
+create table class 
+(
+	班级编号 char(4),
+	班级名称 char(20),
+	所属专业 char(4),
+	constraint pk_class primary key(班级编号),
+	constraint fk_class foreign key(所属专业) references dept(专业号)
+)
+
+create table student
+(
+	学号 char(15),
+	姓名 char(20),
+	性别 char(3),
+	出生日期 date,
+	住址 char(40),
+	所属班级 char(4)
+	constraint pk_student primary key(学号),
+	constraint fk_student foreign key(所属班级) references class(班级编号)
+)

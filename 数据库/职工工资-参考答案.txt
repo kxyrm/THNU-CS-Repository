@@ -1,0 +1,32 @@
+1 建立表
+create table 部门
+(
+	部门号 char(4),
+	部门名 varchar(100),
+	constraint pk primary key(部门号),
+	constraint uk unique(部门名),
+	constraint ck check(部门名 is not null)
+)
+
+create table 职工
+(
+	职工号 char(12),
+	姓名   varchar(20),
+	性别   char(2),
+	出生日期  date,
+	家庭住址 varchar(100),
+	所属部门 char(4),
+	constraint pk primary key(职工号),
+	constraint fk foreign key(所属部门) references 部门(部门号),
+	constraint ck check(性别 in('男','女'))
+)
+create table 工资
+(
+	职工号 char(12),
+	发放日期 date,
+	基本工资 money,
+	岗位津贴 money,
+	扣款  money,
+	constraint pk primary key(职工号,发放日期),
+	constraint fk foreign key(职工号) references 职工(职工号)
+)
